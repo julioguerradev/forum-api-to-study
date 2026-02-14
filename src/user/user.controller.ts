@@ -1,5 +1,6 @@
 import { Controller } from '@nestjs/common';
-import { Body, Delete, Get, Param, Patch, Post } from '@nestjs/common/decorators';
+import { Body, Delete, Get, Param, Patch, Post, UseGuards } from '@nestjs/common/decorators';
+import { AuthGuard } from 'src/auth/auth.guard';
 import { Prisma, Users as UsersModel } from 'src/generated/prisma/client';
 import { UserService } from './user.service';
 
@@ -15,6 +16,7 @@ export class UserController {
     return this.userService.createUser(userData);
   }
 
+  @UseGuards(AuthGuard)
   @Get(':id')
   async getUser(@Param('id') id: string): Promise<UsersModel | null> {
     return this.userService.user({ id: Number(id) });
